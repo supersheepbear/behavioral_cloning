@@ -23,8 +23,10 @@ prev_image_array = None
 
 
 def pre_process(image):
-    image = image[70:140, :, :]
-    #image = scipy.misc.imresize(image, (66, 200, 3))
+    # crop image
+    image = image[35:135, :, :]
+    # resize image
+    image = scipy.misc.imresize(image, (66, 200, 3))
     return image
 
 
@@ -50,7 +52,7 @@ class SimplePIController:
 
 
 controller = SimplePIController(0.1, 0.002)
-set_speed = 16.89
+set_speed = 10
 controller.set_desired(set_speed)
 
 
@@ -86,12 +88,14 @@ def telemetry(sid, data):
 
 
 @sio.on('connect')
+
 def connect(sid, environ):
     print("connect ", sid)
     send_control(0, 0)
 
 
 def send_control(steering_angle, throttle):
+
     sio.emit(
         "steer",
         data={
