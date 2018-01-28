@@ -55,7 +55,9 @@ Also, I add some revocry data from the left and right camera images. Because in 
 In addition, in order to get more generalized model, I randomly adjust the brightness of the images. <br>
 Finally, I crop the images to cut the top 70 rows of pixels(the sky) and the bottom 30 rows of pixels(the vehicle front). This is because the road lines shall be the main focus of the model. The sky and vehicle front only bring noise for the model.<br>
 Below are some random examples of the adjusted images:<br>
-![adjust_images](report_images/adjust_images.png)
+![adjust_images](report_images/adjust_images.png)<br>
+After adjusting images, I apply GaussianBlur, and change image from BGR to YUV to match the Nvidia model input requirement.<br>
+Note that the same process is done in drive.py to match the preprocess pipeline.
 # 3. Model Architecture and Training Strategy
 ## 3.1 Model Architecture
 My model is from the convolutional neural network model in Nvidia paper: **[End to End Learning for Self-Driving Cars](https://images.nvidia.com/content/tegra/automotive/images/2016/solutions/pdf/end-to-end-dl-using-px.pdf)**<br>
