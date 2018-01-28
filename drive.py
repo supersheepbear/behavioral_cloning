@@ -2,6 +2,7 @@ import argparse
 import base64
 from datetime import datetime
 import os
+import cv2
 import shutil
 import scipy.misc
 import numpy as np
@@ -24,9 +25,13 @@ prev_image_array = None
 
 def pre_process(image):
     # crop image
-    image = image[35:135, :, :]
-    # resize image
-    image = scipy.misc.imresize(image, (66, 200, 3))
+    image = image[70:130, :, :]
+    # apply gaussian blur
+    image = cv2.GaussianBlur(image, (3, 3), 0)
+    # change image from RGB to BGR to match cv2 input
+    image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+    # change image from BGR to YUV to match Nvidia image input
+    image = cv2.cvtColor(np.array(image), cv2.COLOR_BGR2YUV)
     return image
 
 
