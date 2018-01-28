@@ -63,7 +63,7 @@ Note that the same process is done in drive.py to match the preprocess pipeline.
 My model is from the convolutional neural network model in Nvidia paper: **[End to End Learning for Self-Driving Cars](https://images.nvidia.com/content/tegra/automotive/images/2016/solutions/pdf/end-to-end-dl-using-px.pdf)**<br>
 The original paper model architecture is shown as belows:<br>
 ![Nvidia_paper](report_images/Nvidia_paper.png)<br>
-I use the same achitecture, but for convolutional layer 5, I use 62*2*2 filters instead of 62*3*3 due to my training input is shaped as (60,320,3), which leads to smaller feature map size in convolutional layer 5.<br>
+I use the same achitecture, but for convolutional layer 5, I use 62 * 2 * 2 filters instead of 62 * 3 * 3 due to my training input is shaped as (60,320,3), which leads to smaller feature map size in convolutional layer 5.<br>
 Besides, I use ELU layers for activations because they have smoother gradient around 0.<br>
 Also, I found that after flatten for Covolutional layer 5, the nodes should be 1152 instead of 1164 for the paper, which I doubt maybe a mistake from the original paper. Many people have introduce a 1164 to 1152 fully-connected layer here, which brings millions more nodes for the model.<br>
 For my model, my output size after flatten is 2176. As a result, I don't use this additional layer, as such layer may cause a huge overfitting, and slows my traning process. Please note the in the original paper, it clearly says that there are only three Fully-connected layers, which does not count in this layer. <br>
