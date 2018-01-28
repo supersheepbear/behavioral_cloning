@@ -1,23 +1,7 @@
 import cv2
 import pandas as pd
 import numpy as np
-import scipy.misc
-from imgaug import augmenters as iaa
 from sklearn.utils import shuffle
-from keras.callbacks import Callback
-
-
-class WeightsSaver(Callback):
-    def __init__(self, model, N):
-        self.model = model
-        self.N = N
-        self.batch = 0
-
-    def on_batch_end(self, batch, logs={}):
-        if self.batch % self.N == 0:
-            name = 'weights%08d.h5' % self.batch
-            self.model.save_weights(name)
-        self.batch += 1
 
 
 class ProcessData:
@@ -30,7 +14,7 @@ class ProcessData:
         self.test_log = pd.DataFrame()
         self.train_generator = 0
         self.validation_generator = 0
-        self.batch_size = 64
+        self.batch_size = 256
 
     def image_generator(self, log, is_train):
         batch_size = self.batch_size
@@ -79,20 +63,6 @@ class ProcessData:
         print('train size:{}'.format(len(self.train_log) * 3))
         print('valid size:{}'.format(len(self.valid_log) * 3))
         print('test size:{}'.format(len(self.test_log) * 3))
-
-    @staticmethod
-    def shear(image, steering_angle, shear_range=50):
-        rows, cols, ch = image.shape
-        dx = np.random.randint(-shear_range, shear_range + 1)
-        random_point = [cols / 2 + dx, rows / 2]
-        pts1 = np.float32([[0, rows], [cols, rows], [cols / 2, rows / 2]])
-        pts2 = np.float32([[0, rows], [cols, rows], random_point])
-        dsteering = dx / (rows / 2) * 360 / (2 * np.pi * 25.0) / 6.0
-        m = cv2.getAffineTransform(pts1, pts2)
-        image = cv2.warpAffine(image, m, (cols, rows), borderMode=1)
-        steering_angle += dsteering
-
-        return image, steering_angle
 
     @staticmethod
     def gamma(image):

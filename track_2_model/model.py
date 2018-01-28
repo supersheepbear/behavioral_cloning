@@ -44,8 +44,6 @@ class BaseModel(preprocess.ProcessData):
         model.add(ELU())
         model.add(Dense(1, name='output'))
         model.summary()
-        #sgd = SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
-        #model.compile(loss='mse', optimizer=Adam(lr=1e-4))
         model.compile(loss='mse', optimizer='Adam')
         early_stop = EarlyStopping(monitor='val_loss',
                                    min_delta=0.0001,

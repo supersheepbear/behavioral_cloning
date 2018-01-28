@@ -20,7 +20,7 @@ class BaseModel(preprocess.ProcessData):
         which is assigned here.
         """
         preprocess.ProcessData.__init__(self)
-        self.batch_size = 512
+        self.batch_size = 256
 
     def train_model(self):
         """main training model

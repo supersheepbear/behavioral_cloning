@@ -17,7 +17,7 @@ class ProcessData:
         self.test_log = pd.DataFrame()
         self.train_generator = 0
         self.validation_generator = 0
-        self.batch_size = 64
+        self.batch_size = 256
 
     def image_generator(self, log, is_train):
         """A generator to provide images and labels for model batches
@@ -80,33 +80,13 @@ class ProcessData:
         print('test size:{}'.format(len(self.test_log)))
 
     @staticmethod
-    def shear(image, steering_angle, shear_range=50):
-        """Apply random shear for images
-        :param image: image array from cv2 imread function
-        :param steering_angle: angle
-        :param shear_range: the amount of maximum shear value for x axis
-        :return sheared image and angle value
-        """
-        rows, cols, ch = image.shape
-        dx = np.random.randint(-shear_range, shear_range + 1)
-        random_point = [cols / 2 + dx, rows / 2]
-        pts1 = np.float32([[0, rows], [cols, rows], [cols / 2, rows / 2]])
-        pts2 = np.float32([[0, rows], [cols, rows], random_point])
-        dsteering = dx / (rows / 2) * 360 / (2 * np.pi * 25.0) / 6.0
-        m = cv2.getAffineTransform(pts1, pts2)
-        image = cv2.warpAffine(image, m, (cols, rows), borderMode=1)
-        steering_angle += dsteering
-
-        return image, steering_angle
-
-    def adjust_images(self, image, current_angle):
+    def adjust_images(image, current_angle):
         """apply random brightness/random flip and random shear to images
         :param image: image array from cv2 imread function
         :param current_angle: angle value from driving log
         :return: adjusted image and angle value
         """
         cv2.add(image, np.array([np.random.uniform(-100, 100)]))
-        image, current_angle = self.shear(image, current_angle)
         flip_flag = np.random.randint(0, 2)
         if flip_flag == 1:
             image = np.fliplr(image)

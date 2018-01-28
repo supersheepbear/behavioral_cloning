@@ -23,21 +23,9 @@ model = None
 prev_image_array = None
 
 
-def gamma(image):
-    gamma = np.random.uniform(0.8, 1.2)
-    inv_gamma = 1.0 / gamma
-    table = np.array([((i / 255.0) ** inv_gamma) * 255
-                      for i in np.arange(0, 256)]).astype("uint8")
-
-    # apply gamma correction using the lookup table
-    return cv2.LUT(image, table)
-
 def pre_process(image):
     # crop image
     image = image[50:140, :, :]
-    #cv2.add(image, np.array([np.random.uniform(-100, 100)]))
-    #image = gamma(image)
-    #image = cv2.GaussianBlur(image, (3, 3), 0)
     image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
     image = cv2.cvtColor(np.array(image), cv2.COLOR_BGR2YUV)
     image = cv2.resize(image, (128, 56))
